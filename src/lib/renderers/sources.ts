@@ -41,6 +41,7 @@ import {
 import { VERT as sandVert, FRAG as sandFrag } from "./fallingSand";
 import { VERT as bulbVert, FRAG as bulbFrag } from "./mandelbulb";
 import { VERT as golVert, FRAG as golFrag } from "./gameOfLife";
+import { VERT as ffVert, FRAG as ffFrag } from "./flowField";
 
 const sources: Record<string, ExampleSource> = {
   triangle: {
@@ -188,6 +189,12 @@ const sources: Record<string, ExampleSource> = {
     fragmentShaders: [{ label: "Simulation", code: golFrag }],
     description:
       "Conway's Game of Life (B3/S23). GPU 핑퐁 FBO에서 Moore neighborhood 8방향 이웃 합산, 규칙 적용.",
+  },
+  "flow-field": {
+    vertexShader: ffVert,
+    fragmentShaders: [{ label: "Fragment", code: ffFrag }],
+    description:
+      "Perlin Noise Flow Field. 5000 파티클이 노이즈 벡터장을 따라 흐르며 잔상 누적. 가산 블렌딩.",
   },
 };
 

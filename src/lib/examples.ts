@@ -529,6 +529,52 @@ export const categories: Category[] = [
           },
         ],
       },
+      {
+        slug: "flow-field",
+        title: "플로우 필드",
+        description:
+          "Perlin Noise 벡터장을 따라 흐르는 파티클 잔상 시각화",
+        params: [
+          {
+            type: "slider",
+            label: "속도",
+            key: "speed",
+            min: 0.5,
+            max: 5,
+            step: 0.5,
+            defaultValue: 1,
+          },
+          {
+            type: "slider",
+            label: "노이즈 스케일",
+            key: "noiseScale",
+            min: 0.5,
+            max: 5,
+            step: 0.5,
+            defaultValue: 2,
+          },
+          {
+            type: "slider",
+            label: "잔상 길이",
+            key: "trail",
+            min: 1,
+            max: 20,
+            step: 1,
+            defaultValue: 10,
+          },
+          {
+            type: "select",
+            label: "색상 모드",
+            key: "colorMode",
+            options: [
+              { label: "Flow", value: "flow" },
+              { label: "Rainbow", value: "rainbow" },
+              { label: "Mono", value: "mono" },
+            ],
+            defaultValue: "flow",
+          },
+        ],
+      },
     ],
   },
 ];

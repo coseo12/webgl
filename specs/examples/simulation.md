@@ -273,3 +273,44 @@ Conway's Game of Life — 2차원 셀룰러 오토마톤.
 | `speed` | slider | 속도 | min: 1, max: 20, step: 1, default: 5 |
 | `pattern` | select | 초기 패턴 | Random/Glider/GliderGun/Pulsar/LWSS, default: random |
 | `running` | checkbox | 실행 | default: true |
+
+---
+
+## 6. 플로우 필드 (flow-field)
+
+Perlin Noise 기반 Flow Field 시각화.
+수천 개의 파티클이 노이즈 벡터장을 따라 흐르며 잔상(trail)을 남긴다.
+
+### 구성 요소
+
+**Perlin Noise (JS)**
+- 2D gradient noise, 256-entry permutation table
+- `perlin(x * scale, y * scale + time)` → 흐름 각도 매핑
+- 시간에 따라 천천히 진화하는 벡터장
+
+**파티클 시스템 (CPU)**
+- 5000개 파티클, 매 프레임 위치 업데이트
+- 각 파티클: 현재 위치에서 Perlin noise 값 → 각도 → 속도 벡터
+- 경계 이탈 시 랜덤 위치로 재생성
+
+**잔상(Trail) 렌더링**
+- 단일 FBO + 텍스처에 누적 렌더링
+- 매 프레임:
+  1. FBO에 반투명 검정 쿼드 (표준 블렌딩) → 기존 잔상 감쇄
+  2. FBO에 파티클 렌더링 (가산 블렌딩) → 새 궤적 추가
+  3. FBO 텍스처를 화면에 블릿
+
+### 색상 모드
+
+- **Flow**: 흐름 각도에 따른 HSL hue (벡터장 방향 시각화)
+- **Rainbow**: 파티클 X 좌표 기반 수평 무지개
+- **Mono**: 고정 시안 색상
+
+### Control Panel 파라미터
+
+| key | type | label | 설정 |
+|-----|------|-------|------|
+| `speed` | slider | 속도 | min: 0.5, max: 5, step: 0.5, default: 1 |
+| `noiseScale` | slider | 노이즈 스케일 | min: 0.5, max: 5, step: 0.5, default: 2 |
+| `trail` | slider | 잔상 길이 | min: 1, max: 20, step: 1, default: 10 |
+| `colorMode` | select | 색상 모드 | Flow/Rainbow/Mono, default: flow |
