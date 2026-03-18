@@ -11,6 +11,7 @@
 
 - 3D 큐브에 확산광(Diffuse Light) 적용
 - 노멀 벡터 attribute 추가
-- uniform `u_lightDirection`, `u_lightColor`
+- uniform `u_lightDir`, `u_lightColor`
 - Lambert 반사 모델: max(dot(normal, lightDir), 0.0)
+- 암비언트 성분(0.15) 추가로 그림자 부분도 최소 밝기 유지
 - 큐브 자동 회전

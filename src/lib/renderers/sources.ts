@@ -25,6 +25,14 @@ import {
 } from "./shader";
 import { VERT_FINAL as partVert, FRAG_FINAL as partFrag } from "./particles";
 import { VERT as solarVert, FRAG as solarFrag } from "./solarSystem";
+import {
+  VERT as marbVert,
+  DROP_FRAG as marbDropFrag,
+  TINE_FRAG as marbTineFrag,
+  SWIRL_FRAG as marbSwirlFrag,
+} from "./marbling";
+import { VERT as sandVert, FRAG as sandFrag } from "./fallingSand";
+import { VERT as bulbVert, FRAG as bulbFrag } from "./mandelbulb";
 
 const sources: Record<string, ExampleSource> = {
   triangle: {
@@ -102,6 +110,28 @@ const sources: Record<string, ExampleSource> = {
     fragmentShaders: [{ label: "Fragment", code: solarFrag }],
     description:
       "3D 태양계 시뮬레이션. 구 메시 생성, 궤도 공전/자전, lookAt 기반 궤도 카메라, 디퓨즈 라이팅.",
+  },
+  marbling: {
+    vertexShader: marbVert,
+    fragmentShaders: [
+      { label: "Drop", code: marbDropFrag },
+      { label: "Tine", code: marbTineFrag },
+      { label: "Swirl", code: marbSwirlFrag },
+    ],
+    description:
+      "Lu & Jaffe의 Mathematical Marbling 기반. 핑퐁 FBO로 역변환 샘플링, Drop/Tine/Swirl 연산.",
+  },
+  "falling-sand": {
+    vertexShader: sandVert,
+    fragmentShaders: [{ label: "Fragment", code: sandFrag }],
+    description:
+      "셀룰러 오토마타 기반 낙하 모래. CPU 시뮬레이션 → texSubImage2D 업로드, NEAREST 필터링 픽셀 아트.",
+  },
+  mandelbulb: {
+    vertexShader: bulbVert,
+    fragmentShaders: [{ label: "Fragment", code: bulbFrag }],
+    description:
+      "Mandelbulb 3D 프랙탈. 구면 좌표 반복 + Distance Estimator로 레이마칭, Orbit Trap 색상 매핑.",
   },
 };
 
