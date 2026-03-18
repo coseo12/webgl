@@ -24,6 +24,7 @@ import {
   FRAG_NOISE,
 } from "./shader";
 import { VERT_FINAL as partVert, FRAG_FINAL as partFrag } from "./particles";
+import { VERT as solarVert, FRAG as solarFrag } from "./solarSystem";
 
 const sources: Record<string, ExampleSource> = {
   triangle: {
@@ -95,6 +96,12 @@ const sources: Record<string, ExampleSource> = {
     fragmentShaders: [{ label: "Fragment", code: partFrag }],
     description:
       "gl.POINTS로 300개 파티클 렌더링. JS에서 위치/속도/수명 업데이트 후 버퍼 갱신. 알파 블렌딩.",
+  },
+  "solar-system": {
+    vertexShader: solarVert,
+    fragmentShaders: [{ label: "Fragment", code: solarFrag }],
+    description:
+      "3D 태양계 시뮬레이션. 구 메시 생성, 궤도 공전/자전, lookAt 기반 궤도 카메라, 디퓨즈 라이팅.",
   },
 };
 

@@ -10,6 +10,7 @@ import { createDiffuseRenderer } from "./diffuse";
 import { createBasicTextureRenderer } from "./basicTexture";
 import { createShaderRenderer } from "./shader";
 import { createParticlesRenderer } from "./particles";
+import { createSolarSystemRenderer } from "./solarSystem";
 
 /** 예제 slug → 렌더러 팩토리 매핑 */
 const rendererMap: Record<string, RendererFactory> = {
@@ -24,6 +25,7 @@ const rendererMap: Record<string, RendererFactory> = {
   "basic-texture": createBasicTextureRenderer,
   shader: createShaderRenderer,
   particles: createParticlesRenderer,
+  "solar-system": createSolarSystemRenderer,
 };
 
 export function getRendererFactory(slug: string): RendererFactory | null {

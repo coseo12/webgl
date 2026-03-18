@@ -87,6 +87,96 @@ export function rotateY(m: Mat4, angle: number): Mat4 {
   return out;
 }
 
+export function rotateZ(m: Mat4, angle: number): Mat4 {
+  const out = new Float32Array(m);
+  const c = Math.cos(angle);
+  const s = Math.sin(angle);
+  const a00 = m[0],
+    a01 = m[1],
+    a02 = m[2],
+    a03 = m[3];
+  const a10 = m[4],
+    a11 = m[5],
+    a12 = m[6],
+    a13 = m[7];
+  out[0] = a00 * c + a10 * s;
+  out[1] = a01 * c + a11 * s;
+  out[2] = a02 * c + a12 * s;
+  out[3] = a03 * c + a13 * s;
+  out[4] = a10 * c - a00 * s;
+  out[5] = a11 * c - a01 * s;
+  out[6] = a12 * c - a02 * s;
+  out[7] = a13 * c - a03 * s;
+  return out;
+}
+
+export function scale(m: Mat4, x: number, y: number, z: number): Mat4 {
+  const out = new Float32Array(m);
+  out[0] = m[0] * x;
+  out[1] = m[1] * x;
+  out[2] = m[2] * x;
+  out[3] = m[3] * x;
+  out[4] = m[4] * y;
+  out[5] = m[5] * y;
+  out[6] = m[6] * y;
+  out[7] = m[7] * y;
+  out[8] = m[8] * z;
+  out[9] = m[9] * z;
+  out[10] = m[10] * z;
+  out[11] = m[11] * z;
+  return out;
+}
+
+export function lookAt(
+  eye: [number, number, number],
+  center: [number, number, number],
+  up: [number, number, number]
+): Mat4 {
+  const m = new Float32Array(16);
+
+  // forward = normalize(center - eye)
+  let fx = center[0] - eye[0];
+  let fy = center[1] - eye[1];
+  let fz = center[2] - eye[2];
+  let len = Math.sqrt(fx * fx + fy * fy + fz * fz);
+  fx /= len;
+  fy /= len;
+  fz /= len;
+
+  // side = normalize(cross(forward, up))
+  let sx = fy * up[2] - fz * up[1];
+  let sy = fz * up[0] - fx * up[2];
+  let sz = fx * up[1] - fy * up[0];
+  len = Math.sqrt(sx * sx + sy * sy + sz * sz);
+  sx /= len;
+  sy /= len;
+  sz /= len;
+
+  // recalculated up = cross(side, forward)
+  const ux = sy * fz - sz * fy;
+  const uy = sz * fx - sx * fz;
+  const uz = sx * fy - sy * fx;
+
+  m[0] = sx;
+  m[1] = ux;
+  m[2] = -fx;
+  m[3] = 0;
+  m[4] = sy;
+  m[5] = uy;
+  m[6] = -fy;
+  m[7] = 0;
+  m[8] = sz;
+  m[9] = uz;
+  m[10] = -fz;
+  m[11] = 0;
+  m[12] = -(sx * eye[0] + sy * eye[1] + sz * eye[2]);
+  m[13] = -(ux * eye[0] + uy * eye[1] + uz * eye[2]);
+  m[14] = fx * eye[0] + fy * eye[1] + fz * eye[2];
+  m[15] = 1;
+
+  return m;
+}
+
 export function multiply(a: Mat4, b: Mat4): Mat4 {
   const out = new Float32Array(16);
   for (let i = 0; i < 4; i++) {

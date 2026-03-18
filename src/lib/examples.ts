@@ -148,6 +148,40 @@ export const categories: Category[] = [
       },
     ],
   },
+  {
+    slug: "simulation",
+    title: "Simulation",
+    examples: [
+      {
+        slug: "solar-system",
+        title: "솔라시스템",
+        description: "태양계 행성 공전/자전 시뮬레이션과 궤도 카메라 시점 제어",
+        params: [
+          {
+            type: "slider",
+            label: "공전 속도",
+            key: "speed",
+            min: 0,
+            max: 5,
+            step: 0.1,
+            defaultValue: 1,
+          },
+          {
+            type: "checkbox",
+            label: "궤도 표시",
+            key: "showOrbits",
+            defaultValue: true,
+          },
+          {
+            type: "checkbox",
+            label: "자동 회전",
+            key: "autoRotate",
+            defaultValue: false,
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 export function findExample(
