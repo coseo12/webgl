@@ -19,3 +19,15 @@
 - uniform `u_scale` 전달
 - Control Panel: 크기(scale) 슬라이더
 - 실시간 반영
+
+## 4. 복합 변환 (combined)
+
+- 이동 + 회전 + 스케일을 하나의 삼각형에 동시 적용
+- **행렬 적용 순서**에 따른 결과 차이를 비교 (TRS vs SRT 등)
+- 2D 변환 행렬을 직접 조합: translate → rotate → scale
+- Control Panel:
+  - `order` (select: TRS/TSR/RTS/SRT)
+  - `tx` (slider, -0.5~0.5) — X 이동량
+  - `ty` (slider, -0.5~0.5) — Y 이동량
+  - `angle` (slider, 0~360) — 회전 각도(도)
+  - `scale` (slider, 0.3~2.0) — 크기 배율

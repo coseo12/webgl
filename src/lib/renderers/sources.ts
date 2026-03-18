@@ -11,12 +11,19 @@ export interface ExampleSource {
 import { VERT as triVert, FRAG as triFrag } from "./triangle";
 import { VERT as rectVert, FRAG as rectFrag } from "./rectangle";
 import { VERT as colorsVert, FRAG as colorsFrag } from "./colors";
+import { VERT as circVert, FRAG as circFrag } from "./circle";
+import { VERT as blendVert, FRAG as blendFrag } from "./blending";
 import { VERT as transVert, FRAG as transFrag } from "./translation";
 import { VERT as rotVert, FRAG as rotFrag } from "./rotation";
 import { VERT as scaleVert, FRAG as scaleFrag } from "./scale";
+import { VERT as combVert, FRAG as combFrag } from "./combined";
 import { VERT as ambVert, FRAG as ambFrag } from "./ambient";
 import { VERT as diffVert, FRAG as diffFrag } from "./diffuse";
+import { VERT as specVert, FRAG as specFrag } from "./specular";
+import { VERT as plVert, FRAG as plFrag } from "./pointLight";
 import { VERT as texVert, FRAG as texFrag } from "./basicTexture";
+import { VERT as mtVert, FRAG as mtFrag } from "./multiTexture";
+import { VERT as twVert, FRAG as twFrag } from "./textureWrapping";
 import {
   VERT as shaderVert,
   FRAG_DEFAULT,
@@ -53,6 +60,18 @@ const sources: Record<string, ExampleSource> = {
     description:
       "각 꼭짓점에 커스텀 색상을 적용. Control Panel의 배경색 값을 gl.clearColor에 반영.",
   },
+  circle: {
+    vertexShader: circVert,
+    fragmentShaders: [{ label: "Fragment", code: circFrag }],
+    description:
+      "TRIANGLE_FAN으로 원 렌더링. segments 슬라이더로 다각형→원 변화. HSL 기반 무지개 색상.",
+  },
+  blending: {
+    vertexShader: blendVert,
+    fragmentShaders: [{ label: "Fragment", code: blendFrag }],
+    description:
+      "gl.BLEND로 반투명 렌더링. 3개 원이 겹치며 블렌드 모드(일반/가산/곱셈) 비교.",
+  },
   translation: {
     vertexShader: transVert,
     fragmentShaders: [{ label: "Fragment", code: transFrag }],
@@ -71,6 +90,12 @@ const sources: Record<string, ExampleSource> = {
     description:
       "uniform u_scale로 크기 배율 전달. 슬라이더 값에 따라 실시간 크기 변경.",
   },
+  combined: {
+    vertexShader: combVert,
+    fragmentShaders: [{ label: "Fragment", code: combFrag }],
+    description:
+      "3x3 행렬로 이동+회전+스케일 복합 변환. 적용 순서(TRS/SRT 등)에 따른 결과 차이 비교.",
+  },
   ambient: {
     vertexShader: ambVert,
     fragmentShaders: [{ label: "Fragment", code: ambFrag }],
@@ -83,11 +108,35 @@ const sources: Record<string, ExampleSource> = {
     description:
       "노멀 벡터를 이용한 Lambert 확산 반사. dot(normal, lightDir)로 빛의 강도 계산.",
   },
+  specular: {
+    vertexShader: specVert,
+    fragmentShaders: [{ label: "Fragment", code: specFrag }],
+    description:
+      "Phong 반사 모델: ambient + diffuse + specular. reflect()와 shininess로 광택 하이라이트.",
+  },
+  "point-light": {
+    vertexShader: plVert,
+    fragmentShaders: [{ label: "Fragment", code: plFrag }],
+    description:
+      "위치 기반 점광원. 거리 감쇠 1/(1+att*d²) 적용. 마우스로 광원 위치 실시간 이동.",
+  },
   "basic-texture": {
     vertexShader: texVert,
     fragmentShaders: [{ label: "Fragment", code: texFrag }],
     description:
       "프로시저럴 체커보드 텍스처 생성 후 texImage2D로 업로드. UV 좌표로 텍스처 매핑.",
+  },
+  "multi-texture": {
+    vertexShader: mtVert,
+    fragmentShaders: [{ label: "Fragment", code: mtFrag }],
+    description:
+      "TEXTURE0/TEXTURE1 멀티 텍스처 유닛으로 체커보드+스트라이프 혼합. mix() 블렌딩.",
+  },
+  "texture-wrapping": {
+    vertexShader: twVert,
+    fragmentShaders: [{ label: "Fragment", code: twFrag }],
+    description:
+      "REPEAT/MIRRORED_REPEAT/CLAMP_TO_EDGE 래핑 모드 비교. UV 스케일 확장으로 차이 시각화.",
   },
   shader: {
     vertexShader: shaderVert,

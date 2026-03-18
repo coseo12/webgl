@@ -23,3 +23,22 @@
 - Control Panel: 배경색(bgColor) 컬러 피커
 - `gl.clearColor`에 bgColor 반영
 - 정적 렌더링 (파라미터 변경 시 다시 그리기)
+
+## 4. 원 (circle)
+
+- `gl.TRIANGLE_FAN`으로 원 그리기
+- 중심점 + 둘레 버텍스로 부채꼴 삼각형 구성
+- segments 슬라이더로 다각형(3)→원(64) 변화를 실시간 확인
+- 무지개 색상: 둘레 버텍스에 HSL 기반 색상 할당
+- Control Panel: `segments` (slider, 3~64, default 32)
+
+## 5. 블렌딩 (blending)
+
+- `gl.enable(gl.BLEND)` + `gl.blendFunc`를 사용한 반투명 렌더링
+- 빨강/초록/파랑 반투명 원 3개가 벤 다이어그램 형태로 겹침
+- 블렌드 모드에 따른 혼합 결과 차이를 시각적으로 비교
+- 블렌드 모드:
+  - 일반: `SRC_ALPHA, ONE_MINUS_SRC_ALPHA`
+  - 가산: `SRC_ALPHA, ONE`
+  - 곱셈: `DST_COLOR, ZERO`
+- Control Panel: `alpha` (slider, 0.1~1.0, default 0.5), `blendMode` (select: normal/additive/multiply)
