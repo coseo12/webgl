@@ -14,6 +14,7 @@ import { createSolarSystemRenderer } from "./solarSystem";
 import { createMarblingRenderer } from "./marbling";
 import { createFallingSandRenderer } from "./fallingSand";
 import { createMandelbulbRenderer } from "./mandelbulb";
+import { createGameOfLifeRenderer } from "./gameOfLife";
 import { createCircleRenderer } from "./circle";
 import { createBlendingRenderer } from "./blending";
 import { createCombinedRenderer } from "./combined";
@@ -46,6 +47,7 @@ const rendererMap: Record<string, RendererFactory> = {
   marbling: createMarblingRenderer,
   "falling-sand": createFallingSandRenderer,
   mandelbulb: createMandelbulbRenderer,
+  "game-of-life": createGameOfLifeRenderer,
 };
 
 export function getRendererFactory(slug: string): RendererFactory | null {

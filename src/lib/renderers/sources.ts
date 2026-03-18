@@ -40,6 +40,7 @@ import {
 } from "./marbling";
 import { VERT as sandVert, FRAG as sandFrag } from "./fallingSand";
 import { VERT as bulbVert, FRAG as bulbFrag } from "./mandelbulb";
+import { VERT as golVert, FRAG as golFrag } from "./gameOfLife";
 
 const sources: Record<string, ExampleSource> = {
   triangle: {
@@ -181,6 +182,12 @@ const sources: Record<string, ExampleSource> = {
     fragmentShaders: [{ label: "Fragment", code: bulbFrag }],
     description:
       "Mandelbulb 3D 프랙탈. 구면 좌표 반복 + Distance Estimator로 레이마칭, Orbit Trap 색상 매핑.",
+  },
+  "game-of-life": {
+    vertexShader: golVert,
+    fragmentShaders: [{ label: "Simulation", code: golFrag }],
+    description:
+      "Conway's Game of Life (B3/S23). GPU 핑퐁 FBO에서 Moore neighborhood 8방향 이웃 합산, 규칙 적용.",
   },
 };
 

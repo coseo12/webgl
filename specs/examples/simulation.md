@@ -227,3 +227,49 @@ z_{n+1} = z_n^power + c
 | `iterations` | slider | 반복 횟수 | min: 4, max: 16, step: 1, default: 8 |
 | `colorScheme` | select | 색상 테마 | 클래식/웜톤/쿨톤/사이키델릭, default: classic |
 | `autoRotate` | checkbox | 자동 회전 | default: true |
+
+---
+
+## 5. 게임 오브 라이프 (game-of-life)
+
+Conway's Game of Life — 2차원 셀룰러 오토마톤.
+간단한 규칙으로 복잡한 패턴이 창발하는 대표적 시뮬레이션.
+
+### 규칙 (B3/S23)
+
+무한 2차원 그리드, 각 셀은 alive(1) 또는 dead(0).
+매 세대 동시 업데이트 (Moore neighborhood — 8방향 이웃):
+
+1. **탄생(Birth)**: dead 셀의 alive 이웃이 **정확히 3개**면 → alive
+2. **생존(Survival)**: alive 셀의 alive 이웃이 **2개 또는 3개**면 → alive 유지
+3. **죽음**: 그 외 모든 alive 셀 → dead (과소/과밀)
+
+### 초기 패턴 프리셋
+
+- **Random**: 랜덤 30% 채움
+- **Glider**: 이동하는 최소 패턴 `[(1,0),(2,1),(0,2),(1,2),(2,2)]`
+- **Glider Gun (Gosper)**: 주기적으로 글라이더를 생성하는 패턴
+- **Pulsar**: 주기 3 오실레이터 (가장 큰 주기 3 패턴)
+- **Lightweight Spaceship (LWSS)**: 수평 이동 우주선
+
+### 렌더링
+
+- **GPU 시뮬레이션**: 핑퐁 프레임버퍼로 셀 상태를 텍스처에 저장
+  - 프래그먼트 쉐이더에서 8방향 이웃 합산 → 규칙 적용
+  - texelFetch 대신 `texture2D` + 1/resolution 오프셋 사용 (WebGL1 호환)
+- **NEAREST 필터링**: 픽셀 아트 느낌
+- alive 셀: 밝은 색 (cyan/green 계열)
+- dead 셀: 어두운 배경
+
+### 인터랙션
+
+- 클릭/드래그: 셀 토글 (alive ↔ dead)
+- 시뮬레이션 일시정지 중에도 셀 편집 가능
+
+### Control Panel 파라미터
+
+| key | type | label | 설정 |
+|-----|------|-------|------|
+| `speed` | slider | 속도 | min: 1, max: 20, step: 1, default: 5 |
+| `pattern` | select | 초기 패턴 | Random/Glider/GliderGun/Pulsar/LWSS, default: random |
+| `running` | checkbox | 실행 | default: true |

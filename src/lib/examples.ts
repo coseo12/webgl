@@ -493,6 +493,42 @@ export const categories: Category[] = [
           },
         ],
       },
+      {
+        slug: "game-of-life",
+        title: "게임 오브 라이프",
+        description:
+          "Conway's Game of Life — B3/S23 규칙, GPU 시뮬레이션, 패턴 프리셋",
+        params: [
+          {
+            type: "slider",
+            label: "속도",
+            key: "speed",
+            min: 1,
+            max: 20,
+            step: 1,
+            defaultValue: 5,
+          },
+          {
+            type: "select",
+            label: "초기 패턴",
+            key: "pattern",
+            options: [
+              { label: "랜덤", value: "random" },
+              { label: "글라이더", value: "glider" },
+              { label: "글라이더 건", value: "gliderGun" },
+              { label: "펄서", value: "pulsar" },
+              { label: "우주선 (LWSS)", value: "lwss" },
+            ],
+            defaultValue: "random",
+          },
+          {
+            type: "checkbox",
+            label: "실행",
+            key: "running",
+            defaultValue: true,
+          },
+        ],
+      },
     ],
   },
 ];
