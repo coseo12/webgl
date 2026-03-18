@@ -314,3 +314,44 @@ Perlin Noise 기반 Flow Field 시각화.
 | `noiseScale` | slider | 노이즈 스케일 | min: 0.5, max: 5, step: 0.5, default: 2 |
 | `trail` | slider | 잔상 길이 | min: 1, max: 20, step: 1, default: 10 |
 | `colorMode` | select | 색상 모드 | Flow/Rainbow/Mono, default: flow |
+
+---
+
+## 7. 상호 인력 (mutual-attraction)
+
+N-body 중력 시뮬레이션. 파티클들이 서로 끌어당기며 궤도를 형성한다.
+
+### 물리
+
+- **만유인력**: `F = G * m1 * m2 / (r² + ε²)` (ε: 소프트닝, 특이점 방지)
+- **적분**: Velocity Verlet (위치 → 힘 계산 → 속도 → 위치)
+- **감쇠(Damping)**: 매 프레임 속도에 감쇠 계수 곱셈 (에너지 손실 제어)
+- O(N²) 힘 계산, N=100에서 실시간 가능
+
+### 초기 배치
+
+- 100개 파티클을 원형으로 배치
+- 초기 속도: 접선 방향 (원형 궤도 근사)
+- 질량: 랜덤 변동 (0.5~1.5)
+- 색상: 질량 비례 HSL hue 할당
+
+### 렌더링
+
+- **Trail FBO**: flow-field과 동일한 감쇄 + 누적 방식
+- **파티클**: gl.POINTS, 질량 비례 크기 (3~8px)
+- **연결선**: 근접 파티클 간 gl.LINES, 거리에 따른 알파 감쇠 (showLines 옵션)
+- 가산 블렌딩으로 밝은 궤적
+
+### 인터랙션
+
+- 마우스 클릭/홀드: 클릭 위치에 임시 어트랙터 (강한 인력점) 생성
+- 마우스를 떼면 어트랙터 해제
+
+### Control Panel 파라미터
+
+| key | type | label | 설정 |
+|-----|------|-------|------|
+| `gravity` | slider | 중력 | min: 0.1, max: 5, step: 0.1, default: 1 |
+| `damping` | slider | 감쇠 | min: 0.95, max: 1, step: 0.005, default: 0.998 |
+| `trail` | slider | 잔상 길이 | min: 1, max: 20, step: 1, default: 8 |
+| `showLines` | checkbox | 연결선 표시 | default: true |

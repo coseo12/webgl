@@ -42,6 +42,7 @@ import { VERT as sandVert, FRAG as sandFrag } from "./fallingSand";
 import { VERT as bulbVert, FRAG as bulbFrag } from "./mandelbulb";
 import { VERT as golVert, FRAG as golFrag } from "./gameOfLife";
 import { VERT as ffVert, FRAG as ffFrag } from "./flowField";
+import { VERT as maVert, FRAG as maFrag } from "./mutualAttraction";
 
 const sources: Record<string, ExampleSource> = {
   triangle: {
@@ -195,6 +196,12 @@ const sources: Record<string, ExampleSource> = {
     fragmentShaders: [{ label: "Fragment", code: ffFrag }],
     description:
       "Perlin Noise Flow Field. 5000 파티클이 노이즈 벡터장을 따라 흐르며 잔상 누적. 가산 블렌딩.",
+  },
+  "mutual-attraction": {
+    vertexShader: maVert,
+    fragmentShaders: [{ label: "Fragment", code: maFrag }],
+    description:
+      "N-body 중력 시뮬레이션. 100개 파티클 상호 인력, 소프트닝, 감쇠, 마우스 어트랙터. Trail FBO.",
   },
 };
 

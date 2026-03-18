@@ -575,6 +575,47 @@ export const categories: Category[] = [
           },
         ],
       },
+      {
+        slug: "mutual-attraction",
+        title: "상호 인력",
+        description:
+          "N-body 중력 시뮬레이션 — 파티클 상호 인력, 궤도 형성, 마우스 어트랙터",
+        params: [
+          {
+            type: "slider",
+            label: "중력",
+            key: "gravity",
+            min: 0.1,
+            max: 5,
+            step: 0.1,
+            defaultValue: 1,
+          },
+          {
+            type: "slider",
+            label: "감쇠",
+            key: "damping",
+            min: 0.95,
+            max: 1,
+            step: 0.005,
+            defaultValue: 0.998,
+          },
+          {
+            type: "slider",
+            label: "잔상 길이",
+            key: "trail",
+            min: 1,
+            max: 20,
+            step: 1,
+            defaultValue: 8,
+          },
+          {
+            type: "checkbox",
+            label: "연결선 표시",
+            key: "showLines",
+            defaultValue: true,
+          },
+        ],
+      },
     ],
   },
 ];

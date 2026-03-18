@@ -16,6 +16,7 @@ import { createFallingSandRenderer } from "./fallingSand";
 import { createMandelbulbRenderer } from "./mandelbulb";
 import { createGameOfLifeRenderer } from "./gameOfLife";
 import { createFlowFieldRenderer } from "./flowField";
+import { createMutualAttractionRenderer } from "./mutualAttraction";
 import { createCircleRenderer } from "./circle";
 import { createBlendingRenderer } from "./blending";
 import { createCombinedRenderer } from "./combined";
@@ -50,6 +51,7 @@ const rendererMap: Record<string, RendererFactory> = {
   mandelbulb: createMandelbulbRenderer,
   "game-of-life": createGameOfLifeRenderer,
   "flow-field": createFlowFieldRenderer,
+  "mutual-attraction": createMutualAttractionRenderer,
 };
 
 export function getRendererFactory(slug: string): RendererFactory | null {
