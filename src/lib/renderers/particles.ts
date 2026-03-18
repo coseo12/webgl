@@ -23,7 +23,7 @@ void main() {
 }`;
 
 // varying 전달을 위해 쉐이더 수정
-const VERT_FINAL = `
+export const VERT_FINAL = `
 attribute vec2 a_position;
 attribute float a_life;
 varying float v_life;
@@ -33,7 +33,7 @@ void main() {
   v_life = a_life;
 }`;
 
-const FRAG_FINAL = `
+export const FRAG_FINAL = `
 precision mediump float;
 varying float v_life;
 void main() {

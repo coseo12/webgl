@@ -78,6 +78,7 @@ Advanced      — 쉐이더, 파티클 등
 | 캔버스 | 가로 최대 `max-w-3xl`, 종횡비 유지 (`aspect-video` 또는 `aspect-square`) |
 | 정렬 | 수평 중앙 정렬, 상단 여백 적당히 |
 | 반응형 | 컨테이너 너비에 맞춰 캔버스 크기 조절 |
+| 뷰 전환 | Canvas / Code 탭으로 렌더링 결과와 소스 코드 전환 (상세: `@specs/code-viewer.md`) |
 
 ### 4. Control Panel
 

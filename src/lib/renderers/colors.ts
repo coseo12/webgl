@@ -2,7 +2,7 @@ import { createProgram, resizeCanvas, hexToRgb } from "@/lib/webgl";
 import { type ParamValues } from "@/lib/params";
 import { type Renderer } from "./types";
 
-const VERT = `
+export const VERT = `
 attribute vec2 a_position;
 attribute vec3 a_color;
 varying vec3 v_color;
@@ -11,7 +11,7 @@ void main() {
   v_color = a_color;
 }`;
 
-const FRAG = `
+export const FRAG = `
 precision mediump float;
 varying vec3 v_color;
 void main() {

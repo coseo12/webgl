@@ -2,7 +2,7 @@ import { createProgram, resizeCanvas } from "@/lib/webgl";
 import * as mat from "@/lib/matrix";
 import { type Renderer } from "./types";
 
-const VERT = `
+export const VERT = `
 attribute vec3 a_position;
 attribute vec3 a_normal;
 attribute vec3 a_color;
@@ -17,7 +17,7 @@ void main() {
   v_color = a_color;
 }`;
 
-const FRAG = `
+export const FRAG = `
 precision mediump float;
 varying vec3 v_normal;
 varying vec3 v_color;

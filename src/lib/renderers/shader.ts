@@ -2,13 +2,13 @@ import { createProgram, resizeCanvas } from "@/lib/webgl";
 import { type ParamValues } from "@/lib/params";
 import { type Renderer } from "./types";
 
-const VERT = `
+export const VERT = `
 attribute vec2 a_position;
 void main() {
   gl_Position = vec4(a_position, 0.0, 1.0);
 }`;
 
-const FRAG_DEFAULT = `
+export const FRAG_DEFAULT = `
 precision mediump float;
 uniform float u_time;
 uniform vec2 u_resolution;
@@ -20,7 +20,7 @@ void main() {
   gl_FragColor = vec4(r, g, b, 1.0);
 }`;
 
-const FRAG_GRADIENT = `
+export const FRAG_GRADIENT = `
 precision mediump float;
 uniform float u_time;
 uniform vec2 u_resolution;
@@ -32,7 +32,7 @@ void main() {
   gl_FragColor = vec4(r, g, b, 1.0);
 }`;
 
-const FRAG_NOISE = `
+export const FRAG_NOISE = `
 precision mediump float;
 uniform float u_time;
 uniform vec2 u_resolution;

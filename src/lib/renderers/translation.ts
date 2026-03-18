@@ -1,14 +1,14 @@
 import { createProgram, resizeCanvas } from "@/lib/webgl";
 import { type Renderer } from "./types";
 
-const VERT = `
+export const VERT = `
 attribute vec2 a_position;
 uniform vec2 u_translation;
 void main() {
   gl_Position = vec4(a_position + u_translation, 0.0, 1.0);
 }`;
 
-const FRAG = `
+export const FRAG = `
 precision mediump float;
 void main() {
   gl_FragColor = vec4(0.3, 0.7, 1.0, 1.0);

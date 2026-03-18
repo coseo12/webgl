@@ -1,7 +1,7 @@
 import { createProgram, resizeCanvas } from "@/lib/webgl";
 import { type Renderer } from "./types";
 
-const VERT = `
+export const VERT = `
 attribute vec2 a_position;
 attribute vec2 a_texCoord;
 varying vec2 v_texCoord;
@@ -10,7 +10,7 @@ void main() {
   v_texCoord = a_texCoord;
 }`;
 
-const FRAG = `
+export const FRAG = `
 precision mediump float;
 varying vec2 v_texCoord;
 uniform sampler2D u_texture;
