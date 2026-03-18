@@ -1,7 +1,10 @@
+import { type Param } from "./params";
+
 export interface Example {
   slug: string;
   title: string;
   description: string;
+  params?: Param[];
 }
 
 export interface Category {
@@ -29,6 +32,14 @@ export const categories: Category[] = [
         slug: "colors",
         title: "색상",
         description: "버텍스 컬러를 이용한 그라데이션",
+        params: [
+          {
+            type: "color",
+            label: "배경색",
+            key: "bgColor",
+            defaultValue: "#000000",
+          },
+        ],
       },
     ],
   },
@@ -45,11 +56,39 @@ export const categories: Category[] = [
         slug: "rotation",
         title: "회전",
         description: "오브젝트 회전(Rotation)",
+        params: [
+          {
+            type: "slider",
+            label: "회전 속도",
+            key: "speed",
+            min: 0,
+            max: 10,
+            step: 0.1,
+            defaultValue: 1,
+          },
+          {
+            type: "checkbox",
+            label: "자동 회전",
+            key: "autoRotate",
+            defaultValue: true,
+          },
+        ],
       },
       {
         slug: "scale",
         title: "스케일",
         description: "오브젝트 크기 변환(Scale)",
+        params: [
+          {
+            type: "slider",
+            label: "크기",
+            key: "scale",
+            min: 0.1,
+            max: 3,
+            step: 0.1,
+            defaultValue: 1,
+          },
+        ],
       },
     ],
   },
@@ -88,6 +127,19 @@ export const categories: Category[] = [
         slug: "shader",
         title: "커스텀 쉐이더",
         description: "GLSL 쉐이더 프로그래밍",
+        params: [
+          {
+            type: "select",
+            label: "쉐이더 타입",
+            key: "shaderType",
+            options: [
+              { label: "기본", value: "default" },
+              { label: "그라데이션", value: "gradient" },
+              { label: "노이즈", value: "noise" },
+            ],
+            defaultValue: "default",
+          },
+        ],
       },
       {
         slug: "particles",

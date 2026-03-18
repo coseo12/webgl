@@ -1,0 +1,22 @@
+# Basic 예제 스펙
+
+## 1. 삼각형 (triangle)
+
+- 화면 중앙에 빨강/초록/파랑 버텍스 컬러의 삼각형 렌더링
+- 버텍스 쉐이더: 위치 + 색상 attribute
+- 프래그먼트 쉐이더: varying으로 전달받은 색상 보간 출력
+- 정적 렌더링 (애니메이션 없음)
+
+## 2. 사각형 (rectangle)
+
+- 화면 중앙에 흰색 사각형 렌더링
+- 2개의 삼각형(6개 버텍스 또는 인덱스 버퍼)으로 구성
+- `gl.drawElements` + `ELEMENT_ARRAY_BUFFER` 사용
+- 정적 렌더링
+
+## 3. 색상 (colors)
+
+- 삼각형에 각 꼭짓점별 커스텀 색상 적용
+- Control Panel: 배경색(bgColor) 컬러 피커
+- `gl.clearColor`에 bgColor 반영
+- 정적 렌더링 (파라미터 변경 시 다시 그리기)

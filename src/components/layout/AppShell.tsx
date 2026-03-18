@@ -21,7 +21,7 @@ export default function AppShell({ children }: AppShellProps) {
 
       {/* 메인 콘텐츠: lg에서 사이드바 너비만큼 왼쪽 마진 */}
       <main className="lg:ml-64">
-        <div className="mx-auto max-w-4xl px-6 py-8">{children}</div>
+        <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-8">{children}</div>
       </main>
     </div>
   );
