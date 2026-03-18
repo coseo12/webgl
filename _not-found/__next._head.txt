@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[97367,["/webgl/_next/static/chunks/cc6cc2c3d77ba1e3.js","/webgl/_next/static/chunks/d2be314c3ece3fbe.js"],"ViewportBoundary"]
+3:I[97367,["/webgl/_next/static/chunks/cc6cc2c3d77ba1e3.js","/webgl/_next/static/chunks/d2be314c3ece3fbe.js"],"MetadataBoundary"]
+4:"$Sreact.suspense"
+0:{"buildId":"09hyNgh_CKUpdcG4QwEO0","rsc":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L2",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L3",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"WebGL Examples"}],["$","meta","1",{"name":"description","content":"다양한 WebGL 예제를 탐색하고 실행해볼 수 있는 쇼케이스"}]]}]}]}],null]}],"loading":null,"isPartial":false}

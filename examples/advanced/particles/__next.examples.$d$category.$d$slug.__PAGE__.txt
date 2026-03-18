@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[34261,["/webgl/_next/static/chunks/cc6cc2c3d77ba1e3.js","/webgl/_next/static/chunks/c49f70b99bcf9a45.js"],"default"]
+3:I[97367,["/webgl/_next/static/chunks/ff1a16fafef87110.js","/webgl/_next/static/chunks/d2be314c3ece3fbe.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+0:{"buildId":"09hyNgh_CKUpdcG4QwEO0","rsc":["$","$1","c",{"children":[["$","$L2",null,{"category":{"slug":"advanced","title":"Advanced","examples":[{"slug":"shader","title":"커스텀 쉐이더","description":"GLSL 쉐이더 프로그래밍","params":[{"type":"select","label":"쉐이더 타입","key":"shaderType","options":[{"label":"기본","value":"default"},{"label":"그라데이션","value":"gradient"},{"label":"노이즈","value":"noise"}],"defaultValue":"default"}]},{"slug":"particles","title":"파티클","description":"파티클 시스템 구현"}]},"example":{"slug":"particles","title":"파티클","description":"파티클 시스템 구현"}}],[["$","script","script-0",{"src":"/webgl/_next/static/chunks/c49f70b99bcf9a45.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"loading":null,"isPartial":false}
+5:null
