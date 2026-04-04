@@ -34,3 +34,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Harness 로그 (상태 파일은 추적)
+.harness/logs/
