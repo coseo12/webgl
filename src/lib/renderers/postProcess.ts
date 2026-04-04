@@ -92,15 +92,15 @@ uniform int u_filter;
 
 varying vec2 v_uv;
 
-// 3x3 컨볼루션
+// 3x3 컨볼루션 (mat3는 column-major이므로 kernel[col][row] 순서로 접근)
 vec3 convolve(mat3 kernel) {
   vec2 texel = 1.0 / u_resolution;
   vec3 result = vec3(0.0);
   for (int y = -1; y <= 1; y++) {
     for (int x = -1; x <= 1; x++) {
       vec2 offset = vec2(float(x), float(y)) * texel;
-      vec3 sample = texture2D(u_texture, v_uv + offset).rgb;
-      result += sample * kernel[y + 1][x + 1];
+      vec3 s = texture2D(u_texture, v_uv + offset).rgb;
+      result += s * kernel[x + 1][y + 1];
     }
   }
   return result;
