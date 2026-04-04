@@ -43,6 +43,7 @@ import { VERT as bulbVert, FRAG as bulbFrag } from "./mandelbulb";
 import { VERT as golVert, FRAG as golFrag } from "./gameOfLife";
 import { VERT as ffVert, FRAG as ffFrag } from "./flowField";
 import { VERT as maVert, FRAG as maFrag } from "./mutualAttraction";
+import { VERT as orbVert, FRAG as orbFrag } from "./orbitCamera";
 
 const sources: Record<string, ExampleSource> = {
   triangle: {
@@ -202,6 +203,12 @@ const sources: Record<string, ExampleSource> = {
     fragmentShaders: [{ label: "Fragment", code: maFrag }],
     description:
       "N-body 중력 시뮬레이션. 100개 파티클 상호 인력, 소프트닝, 감쇠, 마우스 어트랙터. Trail FBO.",
+  },
+  "orbit-camera": {
+    vertexShader: orbVert,
+    fragmentShaders: [{ label: "Fragment", code: orbFrag }],
+    description:
+      "Orbit Camera: 구면 좌표로 카메라 위치 계산, lookAt으로 뷰 행렬 생성. 마우스 드래그/휠로 공전/줌.",
   },
 };
 

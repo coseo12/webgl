@@ -24,6 +24,7 @@ import { createSpecularRenderer } from "./specular";
 import { createPointLightRenderer } from "./pointLight";
 import { createMultiTextureRenderer } from "./multiTexture";
 import { createTextureWrappingRenderer } from "./textureWrapping";
+import { createOrbitCameraRenderer } from "./orbitCamera";
 
 /** 예제 slug → 렌더러 팩토리 매핑 */
 const rendererMap: Record<string, RendererFactory> = {
@@ -52,6 +53,7 @@ const rendererMap: Record<string, RendererFactory> = {
   "game-of-life": createGameOfLifeRenderer,
   "flow-field": createFlowFieldRenderer,
   "mutual-attraction": createMutualAttractionRenderer,
+  "orbit-camera": createOrbitCameraRenderer,
 };
 
 export function getRendererFactory(slug: string): RendererFactory | null {

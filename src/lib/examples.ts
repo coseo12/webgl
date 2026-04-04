@@ -191,6 +191,35 @@ export const categories: Category[] = [
     ],
   },
   {
+    slug: "camera",
+    title: "Camera",
+    examples: [
+      {
+        slug: "orbit-camera",
+        title: "오빗 카메라",
+        description:
+          "마우스 드래그로 3D 공전 카메라 조작 — 구면 좌표, lookAt, perspective",
+        params: [
+          {
+            type: "checkbox",
+            label: "자동 회전",
+            key: "autoRotate",
+            defaultValue: true,
+          },
+          {
+            type: "slider",
+            label: "회전 속도",
+            key: "rotateSpeed",
+            min: 0,
+            max: 5,
+            step: 0.1,
+            defaultValue: 1,
+          },
+        ],
+      },
+    ],
+  },
+  {
     slug: "lighting",
     title: "Lighting",
     examples: [
