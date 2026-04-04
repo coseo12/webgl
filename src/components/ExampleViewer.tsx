@@ -3,12 +3,13 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import WebGLCanvas, { type WebGLCanvasHandle } from "./WebGLCanvas";
 import CodeViewer from "./CodeViewer";
+import ShaderEditor from "./ShaderEditor";
 import ControlPanel from "./ControlPanel";
 import { type Category, type Example } from "@/lib/examples";
 import { type ParamValues, getDefaultValues } from "@/lib/params";
 import { getExampleSource } from "@/lib/renderers/sources";
 
-type ViewTab = "canvas" | "code";
+type ViewTab = "canvas" | "code" | "edit";
 
 interface ExampleViewerProps {
   category: Category;
@@ -107,6 +108,18 @@ export default function ExampleViewer({
         >
           Code
         </button>
+        {source && (
+          <button
+            onClick={() => setViewTab("edit")}
+            className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+              viewTab === "edit"
+                ? "bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900"
+                : "text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+            }`}
+          >
+            Edit
+          </button>
+        )}
       </div>
 
       {/* 콘텐츠 영역 */}
@@ -178,8 +191,15 @@ export default function ExampleViewer({
             onChange={handleChange}
           />
         </>
-      ) : (
+      ) : viewTab === "code" ? (
         source && <CodeViewer source={source} />
+      ) : (
+        source && (
+          <ShaderEditor
+            vertexShader={source.vertexShader}
+            fragmentShader={source.fragmentShaders[0]?.code ?? ""}
+          />
+        )
       )}
     </div>
   );
