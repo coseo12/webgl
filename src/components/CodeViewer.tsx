@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { type ExampleSource } from "@/lib/renderers/sources";
+import { tokenizeLine } from "@/lib/glslHighlight";
 
 interface CodeViewerProps {
   source: ExampleSource;
@@ -101,7 +102,13 @@ export default function CodeViewer({ source }: CodeViewerProps) {
                       <span className="mr-4 inline-block w-8 text-right text-gray-600 select-none">
                         {i + 1}
                       </span>
-                      <span className="text-gray-300">{line}</span>
+                      <span>
+                        {tokenizeLine(line).map((token, j) => (
+                          <span key={j} className={token.className}>
+                            {token.text}
+                          </span>
+                        ))}
+                      </span>
                     </div>
                   ))}
               </code>
