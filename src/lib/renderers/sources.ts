@@ -44,6 +44,7 @@ import { VERT as golVert, FRAG as golFrag } from "./gameOfLife";
 import { VERT as ffVert, FRAG as ffFrag } from "./flowField";
 import { VERT as maVert, FRAG as maFrag } from "./mutualAttraction";
 import { VERT as orbVert, FRAG as orbFrag } from "./orbitCamera";
+import { VERT as nmVert, FRAG as nmFrag } from "./normalMapping";
 
 const sources: Record<string, ExampleSource> = {
   triangle: {
@@ -209,6 +210,12 @@ const sources: Record<string, ExampleSource> = {
     fragmentShaders: [{ label: "Fragment", code: orbFrag }],
     description:
       "Orbit Camera: 구면 좌표로 카메라 위치 계산, lookAt으로 뷰 행렬 생성. 마우스 드래그/휠로 공전/줌.",
+  },
+  "normal-mapping": {
+    vertexShader: nmVert,
+    fragmentShaders: [{ label: "Fragment", code: nmFrag }],
+    description:
+      "Normal Mapping: TBN 행렬로 탄젠트 공간 ↔ 월드 공간 변환. 프로시저럴 벽돌 노멀맵 + Blinn-Phong.",
   },
 };
 

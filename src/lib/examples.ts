@@ -259,6 +259,29 @@ export const categories: Category[] = [
         ],
       },
       {
+        slug: "normal-mapping",
+        title: "노멀 매핑",
+        description:
+          "탄젠트 공간 노멀 매핑 — TBN 행렬, 프로시저럴 벽돌 노멀맵, 마우스로 광원 이동",
+        params: [
+          {
+            type: "slider",
+            label: "범프 강도",
+            key: "bumpStrength",
+            min: 0,
+            max: 3,
+            step: 0.1,
+            defaultValue: 1,
+          },
+          {
+            type: "color",
+            label: "광원 색상",
+            key: "lightColor",
+            defaultValue: "#FFFFFF",
+          },
+        ],
+      },
+      {
         slug: "point-light",
         title: "포인트 라이트",
         description: "위치 기반 점광원 — 거리 감쇠, 마우스 이동",

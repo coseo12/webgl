@@ -25,6 +25,7 @@ import { createPointLightRenderer } from "./pointLight";
 import { createMultiTextureRenderer } from "./multiTexture";
 import { createTextureWrappingRenderer } from "./textureWrapping";
 import { createOrbitCameraRenderer } from "./orbitCamera";
+import { createNormalMappingRenderer } from "./normalMapping";
 
 /** 예제 slug → 렌더러 팩토리 매핑 */
 const rendererMap: Record<string, RendererFactory> = {
@@ -54,6 +55,7 @@ const rendererMap: Record<string, RendererFactory> = {
   "flow-field": createFlowFieldRenderer,
   "mutual-attraction": createMutualAttractionRenderer,
   "orbit-camera": createOrbitCameraRenderer,
+  "normal-mapping": createNormalMappingRenderer,
 };
 
 export function getRendererFactory(slug: string): RendererFactory | null {
