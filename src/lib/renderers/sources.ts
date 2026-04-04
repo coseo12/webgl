@@ -6,6 +6,8 @@ export interface ExampleSource {
   vertexShader: string;
   fragmentShaders: { label: string; code: string }[];
   description: string;
+  /** 렌더러 TypeScript 파일명 (GitHub 소스 링크용) */
+  rendererFile?: string;
 }
 
 import { VERT as triVert, FRAG as triFrag } from "./triangle";
@@ -53,96 +55,112 @@ const sources: Record<string, ExampleSource> = {
     fragmentShaders: [{ label: "Fragment", code: triFrag }],
     description:
       "위치(x,y)와 색상(r,g,b)을 인터리브 버퍼로 전달. varying을 통해 프래그먼트 쉐이더로 색상 보간.",
+    rendererFile: "triangle.ts",
   },
   rectangle: {
     vertexShader: rectVert,
     fragmentShaders: [{ label: "Fragment", code: rectFrag }],
     description:
       "4개 꼭짓점 + 인덱스 버퍼(ELEMENT_ARRAY_BUFFER)로 2개의 삼각형을 구성해 사각형 렌더링.",
+    rendererFile: "rectangle.ts",
   },
   colors: {
     vertexShader: colorsVert,
     fragmentShaders: [{ label: "Fragment", code: colorsFrag }],
     description:
       "각 꼭짓점에 커스텀 색상을 적용. Control Panel의 배경색 값을 gl.clearColor에 반영.",
+    rendererFile: "colors.ts",
   },
   circle: {
     vertexShader: circVert,
     fragmentShaders: [{ label: "Fragment", code: circFrag }],
     description:
       "TRIANGLE_FAN으로 원 렌더링. segments 슬라이더로 다각형→원 변화. HSL 기반 무지개 색상.",
+    rendererFile: "circle.ts",
   },
   blending: {
     vertexShader: blendVert,
     fragmentShaders: [{ label: "Fragment", code: blendFrag }],
     description:
       "gl.BLEND로 반투명 렌더링. 3개 원이 겹치며 블렌드 모드(일반/가산/곱셈) 비교.",
+    rendererFile: "blending.ts",
   },
   translation: {
     vertexShader: transVert,
     fragmentShaders: [{ label: "Fragment", code: transFrag }],
     description:
       "uniform u_translation으로 x,y 오프셋을 전달. sin/cos 기반 애니메이션 루프.",
+    rendererFile: "translation.ts",
   },
   rotation: {
     vertexShader: rotVert,
     fragmentShaders: [{ label: "Fragment", code: rotFrag }],
     description:
       "uniform u_angle로 회전 각도 전달. 버텍스 쉐이더에서 2D 회전 행렬 적용.",
+    rendererFile: "rotation.ts",
   },
   scale: {
     vertexShader: scaleVert,
     fragmentShaders: [{ label: "Fragment", code: scaleFrag }],
     description:
       "uniform u_scale로 크기 배율 전달. 슬라이더 값에 따라 실시간 크기 변경.",
+    rendererFile: "scale.ts",
   },
   combined: {
     vertexShader: combVert,
     fragmentShaders: [{ label: "Fragment", code: combFrag }],
     description:
       "3x3 행렬로 이동+회전+스케일 복합 변환. 적용 순서(TRS/SRT 등)에 따른 결과 차이 비교.",
+    rendererFile: "combined.ts",
   },
   ambient: {
     vertexShader: ambVert,
     fragmentShaders: [{ label: "Fragment", code: ambFrag }],
     description:
       "3D 큐브에 주변광 적용. MVP 행렬로 원근 투영 + 회전. ambientColor × ambientIntensity × objectColor.",
+    rendererFile: "ambient.ts",
   },
   diffuse: {
     vertexShader: diffVert,
     fragmentShaders: [{ label: "Fragment", code: diffFrag }],
     description:
       "노멀 벡터를 이용한 Lambert 확산 반사. dot(normal, lightDir)로 빛의 강도 계산.",
+    rendererFile: "diffuse.ts",
   },
   specular: {
     vertexShader: specVert,
     fragmentShaders: [{ label: "Fragment", code: specFrag }],
     description:
       "Phong 반사 모델: ambient + diffuse + specular. reflect()와 shininess로 광택 하이라이트.",
+    rendererFile: "specular.ts",
   },
   "point-light": {
     vertexShader: plVert,
     fragmentShaders: [{ label: "Fragment", code: plFrag }],
     description:
       "위치 기반 점광원. 거리 감쇠 1/(1+att*d²) 적용. 마우스로 광원 위치 실시간 이동.",
+    rendererFile: "pointLight.ts",
   },
   "basic-texture": {
     vertexShader: texVert,
     fragmentShaders: [{ label: "Fragment", code: texFrag }],
     description:
       "프로시저럴 체커보드 텍스처 생성 후 texImage2D로 업로드. UV 좌표로 텍스처 매핑.",
+    rendererFile: "basicTexture.ts",
   },
   "multi-texture": {
     vertexShader: mtVert,
     fragmentShaders: [{ label: "Fragment", code: mtFrag }],
     description:
       "TEXTURE0/TEXTURE1 멀티 텍스처 유닛으로 체커보드+스트라이프 혼합. mix() 블렌딩.",
+    rendererFile: "multiTexture.ts",
   },
   "texture-wrapping": {
     vertexShader: twVert,
     fragmentShaders: [{ label: "Fragment", code: twFrag }],
     description:
       "REPEAT/MIRRORED_REPEAT/CLAMP_TO_EDGE 래핑 모드 비교. UV 스케일 확장으로 차이 시각화.",
+    rendererFile: "textureWrapping.ts",
   },
   shader: {
     vertexShader: shaderVert,
@@ -153,18 +171,21 @@ const sources: Record<string, ExampleSource> = {
     ],
     description:
       "풀스크린 쿼드에 프래그먼트 쉐이더 효과 적용. u_time, u_resolution uniform 활용.",
+    rendererFile: "shader.ts",
   },
   particles: {
     vertexShader: partVert,
     fragmentShaders: [{ label: "Fragment", code: partFrag }],
     description:
       "gl.POINTS로 300개 파티클 렌더링. JS에서 위치/속도/수명 업데이트 후 버퍼 갱신. 알파 블렌딩.",
+    rendererFile: "particles.ts",
   },
   "solar-system": {
     vertexShader: solarVert,
     fragmentShaders: [{ label: "Fragment", code: solarFrag }],
     description:
       "3D 태양계 시뮬레이션. 구 메시 생성, 궤도 공전/자전, lookAt 기반 궤도 카메라, 디퓨즈 라이팅.",
+    rendererFile: "solarSystem.ts",
   },
   marbling: {
     vertexShader: marbVert,
@@ -175,54 +196,63 @@ const sources: Record<string, ExampleSource> = {
     ],
     description:
       "Lu & Jaffe의 Mathematical Marbling 기반. 핑퐁 FBO로 역변환 샘플링, Drop/Tine/Swirl 연산.",
+    rendererFile: "marbling.ts",
   },
   "falling-sand": {
     vertexShader: sandVert,
     fragmentShaders: [{ label: "Fragment", code: sandFrag }],
     description:
       "셀룰러 오토마타 기반 낙하 모래. CPU 시뮬레이션 → texSubImage2D 업로드, NEAREST 필터링 픽셀 아트.",
+    rendererFile: "fallingSand.ts",
   },
   mandelbulb: {
     vertexShader: bulbVert,
     fragmentShaders: [{ label: "Fragment", code: bulbFrag }],
     description:
       "Mandelbulb 3D 프랙탈. 구면 좌표 반복 + Distance Estimator로 레이마칭, Orbit Trap 색상 매핑.",
+    rendererFile: "mandelbulb.ts",
   },
   "game-of-life": {
     vertexShader: golVert,
     fragmentShaders: [{ label: "Simulation", code: golFrag }],
     description:
       "Conway's Game of Life (B3/S23). GPU 핑퐁 FBO에서 Moore neighborhood 8방향 이웃 합산, 규칙 적용.",
+    rendererFile: "gameOfLife.ts",
   },
   "flow-field": {
     vertexShader: ffVert,
     fragmentShaders: [{ label: "Fragment", code: ffFrag }],
     description:
       "Perlin Noise Flow Field. 5000 파티클이 노이즈 벡터장을 따라 흐르며 잔상 누적. 가산 블렌딩.",
+    rendererFile: "flowField.ts",
   },
   "mutual-attraction": {
     vertexShader: maVert,
     fragmentShaders: [{ label: "Fragment", code: maFrag }],
     description:
       "N-body 중력 시뮬레이션. 100개 파티클 상호 인력, 소프트닝, 감쇠, 마우스 어트랙터. Trail FBO.",
+    rendererFile: "mutualAttraction.ts",
   },
   "orbit-camera": {
     vertexShader: orbVert,
     fragmentShaders: [{ label: "Fragment", code: orbFrag }],
     description:
       "Orbit Camera: 구면 좌표로 카메라 위치 계산, lookAt으로 뷰 행렬 생성. 마우스 드래그/휠로 공전/줌.",
+    rendererFile: "orbitCamera.ts",
   },
   "normal-mapping": {
     vertexShader: nmVert,
     fragmentShaders: [{ label: "Fragment", code: nmFrag }],
     description:
       "Normal Mapping: TBN 행렬로 탄젠트 공간 ↔ 월드 공간 변환. 프로시저럴 벽돌 노멀맵 + Blinn-Phong.",
+    rendererFile: "normalMapping.ts",
   },
   "post-process": {
     vertexShader: ppVert,
     fragmentShaders: [{ label: "Filter", code: ppFrag }],
     description:
       "Post Processing: FBO에 장면 렌더 → 풀스크린 쿼드에 이미지 필터(흑백/반전/엣지/블러/샤프닝/엠보싱) 적용.",
+    rendererFile: "postProcess.ts",
   },
 };
 

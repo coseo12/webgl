@@ -4,6 +4,9 @@ import { useState } from "react";
 import { type ExampleSource } from "@/lib/renderers/sources";
 import { tokenizeLine } from "@/lib/glslHighlight";
 
+const GITHUB_BASE =
+  "https://github.com/coseo12/webgl/blob/main/src/lib/renderers/";
+
 interface CodeViewerProps {
   source: ExampleSource;
 }
@@ -55,15 +58,28 @@ export default function CodeViewer({ source }: CodeViewerProps) {
             ))}
           </div>
 
-          {/* 복사 버튼 */}
-          {tab !== "description" && (
-            <button
-              onClick={handleCopy}
-              className="rounded px-2 py-1 text-xs text-gray-500 transition-colors hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-800"
-            >
-              {copied ? "복사됨" : "복사"}
-            </button>
-          )}
+          <div className="flex gap-1">
+            {/* GitHub 소스 링크 */}
+            {source.rendererFile && tab !== "description" && (
+              <a
+                href={`${GITHUB_BASE}${source.rendererFile}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded px-2 py-1 text-xs text-gray-500 transition-colors hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-800"
+              >
+                JS 소스
+              </a>
+            )}
+            {/* 복사 버튼 */}
+            {tab !== "description" && (
+              <button
+                onClick={handleCopy}
+                className="rounded px-2 py-1 text-xs text-gray-500 transition-colors hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-800"
+              >
+                {copied ? "복사됨" : "복사"}
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Fragment Shader 서브탭 (여러 쉐이더가 있을 때) */}
