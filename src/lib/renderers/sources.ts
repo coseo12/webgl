@@ -45,6 +45,7 @@ import { VERT as ffVert, FRAG as ffFrag } from "./flowField";
 import { VERT as maVert, FRAG as maFrag } from "./mutualAttraction";
 import { VERT as orbVert, FRAG as orbFrag } from "./orbitCamera";
 import { VERT as nmVert, FRAG as nmFrag } from "./normalMapping";
+import { VERT as ppVert, FRAG as ppFrag } from "./postProcess";
 
 const sources: Record<string, ExampleSource> = {
   triangle: {
@@ -216,6 +217,12 @@ const sources: Record<string, ExampleSource> = {
     fragmentShaders: [{ label: "Fragment", code: nmFrag }],
     description:
       "Normal Mapping: TBN 행렬로 탄젠트 공간 ↔ 월드 공간 변환. 프로시저럴 벽돌 노멀맵 + Blinn-Phong.",
+  },
+  "post-process": {
+    vertexShader: ppVert,
+    fragmentShaders: [{ label: "Filter", code: ppFrag }],
+    description:
+      "Post Processing: FBO에 장면 렌더 → 풀스크린 쿼드에 이미지 필터(흑백/반전/엣지/블러/샤프닝/엠보싱) 적용.",
   },
 };
 

@@ -389,6 +389,35 @@ export const categories: Category[] = [
     ],
   },
   {
+    slug: "post-processing",
+    title: "Post Processing",
+    examples: [
+      {
+        slug: "post-process",
+        title: "이미지 필터",
+        description:
+          "FBO 오프스크린 렌더링 → 3x3 컨볼루션 커널 이미지 필터 적용",
+        params: [
+          {
+            type: "select",
+            label: "필터",
+            key: "filter",
+            options: [
+              { label: "원본", value: "none" },
+              { label: "흑백", value: "grayscale" },
+              { label: "반전", value: "invert" },
+              { label: "엣지 디텍션", value: "edge" },
+              { label: "블러", value: "blur" },
+              { label: "샤프닝", value: "sharpen" },
+              { label: "엠보싱", value: "emboss" },
+            ],
+            defaultValue: "none",
+          },
+        ],
+      },
+    ],
+  },
+  {
     slug: "simulation",
     title: "Simulation",
     examples: [

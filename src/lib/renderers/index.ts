@@ -26,6 +26,7 @@ import { createMultiTextureRenderer } from "./multiTexture";
 import { createTextureWrappingRenderer } from "./textureWrapping";
 import { createOrbitCameraRenderer } from "./orbitCamera";
 import { createNormalMappingRenderer } from "./normalMapping";
+import { createPostProcessRenderer } from "./postProcess";
 
 /** 예제 slug → 렌더러 팩토리 매핑 */
 const rendererMap: Record<string, RendererFactory> = {
@@ -56,6 +57,7 @@ const rendererMap: Record<string, RendererFactory> = {
   "mutual-attraction": createMutualAttractionRenderer,
   "orbit-camera": createOrbitCameraRenderer,
   "normal-mapping": createNormalMappingRenderer,
+  "post-process": createPostProcessRenderer,
 };
 
 export function getRendererFactory(slug: string): RendererFactory | null {
