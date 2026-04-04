@@ -9,6 +9,7 @@ import { createProgram, resizeCanvas } from "@/lib/webgl";
 
 // 장면 렌더용 셰이더 (회전하는 색상 큐브)
 const SCENE_VERT = `
+precision mediump float;
 attribute vec2 a_position;
 uniform float u_time;
 
