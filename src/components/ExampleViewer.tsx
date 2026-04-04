@@ -6,7 +6,7 @@ import CodeViewer from "./CodeViewer";
 import ShaderEditor from "./ShaderEditor";
 import ControlPanel from "./ControlPanel";
 import { type Category, type Example } from "@/lib/examples";
-import { type ParamValues, getDefaultValues } from "@/lib/params";
+import { type Param, type ParamValues, getDefaultValues } from "@/lib/params";
 import { getExampleSource } from "@/lib/renderers/sources";
 
 type ViewTab = "canvas" | "code" | "edit";
@@ -21,9 +21,20 @@ export default function ExampleViewer({
   example,
 }: ExampleViewerProps) {
   const params = example.params ?? [];
-  const [values, setValues] = useState<ParamValues>(() =>
-    getDefaultValues(params)
-  );
+  const [values, setValues] = useState<ParamValues>(() => {
+    const defaults = getDefaultValues(params);
+    // URL 쿼리 스트링에서 파라미터 초기값 복원
+    if (typeof window === "undefined") return defaults;
+    const search = new URLSearchParams(window.location.search);
+    for (const p of params) {
+      const v = search.get(p.key);
+      if (v === null) continue;
+      if (p.type === "slider") defaults[p.key] = parseFloat(v);
+      else if (p.type === "checkbox") defaults[p.key] = v === "true";
+      else defaults[p.key] = v;
+    }
+    return defaults;
+  });
   const [viewTab, setViewTab] = useState<ViewTab>("canvas");
   const [paused, setPaused] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -36,6 +47,24 @@ export default function ExampleViewer({
   const handleChange = (key: string, value: number | string | boolean) => {
     setValues((prev) => ({ ...prev, [key]: value }));
   };
+
+  // 파라미터 변경 시 URL 쿼리 스트링 동기화
+  useEffect(() => {
+    if (params.length === 0) return;
+    const defaults = getDefaultValues(params);
+    const search = new URLSearchParams();
+    let hasNonDefault = false;
+    for (const p of params) {
+      if (values[p.key] !== defaults[p.key]) {
+        search.set(p.key, String(values[p.key]));
+        hasNonDefault = true;
+      }
+    }
+    const url = hasNonDefault
+      ? `${window.location.pathname}?${search.toString()}`
+      : window.location.pathname;
+    window.history.replaceState(null, "", url);
+  }, [values, params]);
 
   const handlePlayPause = useCallback(() => {
     const handle = canvasHandleRef.current;

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { type Param, type ParamValues, getDefaultValues } from "@/lib/params";
 
 interface ControlPanelProps {
@@ -15,11 +16,19 @@ export default function ControlPanel({
 }: ControlPanelProps) {
   if (params.length === 0) return null;
 
+  const [copied, setCopied] = useState(false);
+
   const handleReset = () => {
     const defaults = getDefaultValues(params);
     for (const [key, value] of Object.entries(defaults)) {
       onChange(key, value);
     }
+  };
+
+  const handleShare = async () => {
+    await navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
   };
 
   return (
@@ -28,12 +37,20 @@ export default function ControlPanel({
         <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
           Controls
         </h3>
-        <button
-          onClick={handleReset}
-          className="rounded-md px-2.5 py-1 text-xs text-gray-500 transition-colors hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-800"
-        >
-          리셋
-        </button>
+        <div className="flex gap-1">
+          <button
+            onClick={handleShare}
+            className="rounded-md px-2.5 py-1 text-xs text-gray-500 transition-colors hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-800"
+          >
+            {copied ? "복사됨" : "공유"}
+          </button>
+          <button
+            onClick={handleReset}
+            className="rounded-md px-2.5 py-1 text-xs text-gray-500 transition-colors hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-800"
+          >
+            리셋
+          </button>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
