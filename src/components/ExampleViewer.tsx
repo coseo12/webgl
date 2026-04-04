@@ -27,6 +27,7 @@ export default function ExampleViewer({
   const [viewTab, setViewTab] = useState<ViewTab>("canvas");
   const [paused, setPaused] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [timeScale, setTimeScale] = useState(1);
   const canvasHandleRef = useRef<WebGLCanvasHandle>(null);
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
 
@@ -134,7 +135,22 @@ export default function ExampleViewer({
                 ref={canvasHandleRef}
                 slug={example.slug}
                 params={values}
+                timeScale={timeScale}
               />
+
+              {/* 속도 컨트롤 */}
+              <div className="absolute bottom-3 left-3 flex items-center gap-2 rounded-lg bg-black/50 px-2.5 py-1.5 backdrop-blur-sm">
+                <span className="text-xs font-mono text-white/70">{timeScale.toFixed(1)}x</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={3}
+                  step={0.1}
+                  value={timeScale}
+                  onChange={(e) => setTimeScale(parseFloat(e.target.value))}
+                  className="h-1 w-16 cursor-pointer accent-white"
+                />
+              </div>
 
               {/* 캔버스 오버레이 컨트롤 */}
               <div className="absolute bottom-3 right-3 flex gap-1.5">

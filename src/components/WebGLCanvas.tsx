@@ -8,6 +8,7 @@ import { getRendererFactory } from "@/lib/renderers";
 interface WebGLCanvasProps {
   slug: string;
   params: ParamValues;
+  timeScale?: number;
 }
 
 export interface WebGLCanvasHandle {
@@ -18,7 +19,7 @@ export interface WebGLCanvasHandle {
 }
 
 const WebGLCanvas = forwardRef<WebGLCanvasHandle, WebGLCanvasProps>(
-  function WebGLCanvas({ slug, params }, ref) {
+  function WebGLCanvas({ slug, params, timeScale = 1 }, ref) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const rendererRef = useRef<Renderer | null>(null);
     const rafRef = useRef<number>(0);
@@ -29,16 +30,28 @@ const WebGLCanvas = forwardRef<WebGLCanvasHandle, WebGLCanvasProps>(
     const pausedAtRef = useRef(0);
     const glRef = useRef<WebGLRenderingContext | null>(null);
     const factoryRef = useRef<ReturnType<typeof getRendererFactory>>(null);
+    // timeScale 기반 가상 시간 누적
+    const virtualTimeRef = useRef(0);
+    const lastRealTimeRef = useRef(0);
+    const timeScaleRef = useRef(timeScale);
 
     paramsRef.current = params;
+    timeScaleRef.current = timeScale;
 
     const startLoop = useCallback(() => {
       const renderer = rendererRef.current;
       if (!renderer) return;
 
+      lastRealTimeRef.current = performance.now();
+
       const loop = (time: number) => {
         if (pausedRef.current) return;
-        renderer.render(time - timeOffsetRef.current, paramsRef.current);
+        // 실제 경과 시간에 timeScale을 곱해 가상 시간 누적
+        const delta = time - lastRealTimeRef.current;
+        lastRealTimeRef.current = time;
+        virtualTimeRef.current += delta * timeScaleRef.current;
+
+        renderer.render(virtualTimeRef.current, paramsRef.current);
         rafRef.current = requestAnimationFrame(loop);
       };
       rafRef.current = requestAnimationFrame(loop);
@@ -54,12 +67,9 @@ const WebGLCanvas = forwardRef<WebGLCanvasHandle, WebGLCanvasProps>(
       resume() {
         if (!pausedRef.current) return;
         pausedRef.current = false;
-        // 일시정지 동안 흐른 시간을 오프셋에 누적
-        timeOffsetRef.current += performance.now() - pausedAtRef.current;
         startLoop();
       },
       reset() {
-        // 렌더러 재생성
         const gl = glRef.current;
         const canvas = canvasRef.current;
         const factory = factoryRef.current;
@@ -70,7 +80,7 @@ const WebGLCanvas = forwardRef<WebGLCanvasHandle, WebGLCanvasProps>(
 
         const renderer = factory(gl, canvas);
         rendererRef.current = renderer;
-        timeOffsetRef.current = 0;
+        virtualTimeRef.current = 0;
         pausedRef.current = false;
         startLoop();
       },
@@ -95,7 +105,7 @@ const WebGLCanvas = forwardRef<WebGLCanvasHandle, WebGLCanvasProps>(
       const renderer = factory(gl, canvas);
       rendererRef.current = renderer;
       pausedRef.current = false;
-      timeOffsetRef.current = 0;
+      virtualTimeRef.current = 0;
 
       startLoop();
 
