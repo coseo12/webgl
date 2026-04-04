@@ -113,9 +113,32 @@ export function createPointLightRenderer(
     lightY = (0.5 - (e.clientY - rect.top) / rect.height) * 6;
   }
 
+  // 터치 지원
+  const onTouchStart = (e: TouchEvent) => {
+    if (e.touches.length === 1) {
+      isDragging = true;
+      const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      lightX = ((touch.clientX - rect.left) / rect.width - 0.5) * 6;
+      lightY = (0.5 - (touch.clientY - rect.top) / rect.height) * 6;
+    }
+  };
+  const onTouchMove = (e: TouchEvent) => {
+    if (!isDragging || e.touches.length !== 1) return;
+    e.preventDefault();
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    lightX = ((touch.clientX - rect.left) / rect.width - 0.5) * 6;
+    lightY = (0.5 - (touch.clientY - rect.top) / rect.height) * 6;
+  };
+  const onTouchEnd = () => { isDragging = false; };
+
   canvas.addEventListener("mousedown", onMouseDown);
   window.addEventListener("mousemove", onMouseMove);
   window.addEventListener("mouseup", onMouseUp);
+  canvas.addEventListener("touchstart", onTouchStart, { passive: true });
+  canvas.addEventListener("touchmove", onTouchMove, { passive: false });
+  canvas.addEventListener("touchend", onTouchEnd, { passive: true });
 
   return {
     render(time: number, params: ParamValues) {
@@ -159,6 +182,9 @@ export function createPointLightRenderer(
       canvas.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
+      canvas.removeEventListener("touchstart", onTouchStart);
+      canvas.removeEventListener("touchmove", onTouchMove);
+      canvas.removeEventListener("touchend", onTouchEnd);
       gl.deleteBuffer(vbo);
       gl.deleteBuffer(ibo);
       gl.deleteProgram(program);

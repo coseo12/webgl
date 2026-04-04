@@ -234,9 +234,33 @@ export function createMutualAttractionRenderer(
     attractorY = (1 - (e.clientY - rect.top) / rect.height) * 2 - 1;
   }
 
+  // 터치 지원
+  function updateAttractorTouch(e: TouchEvent) {
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    attractorX = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
+    attractorY = (1 - (touch.clientY - rect.top) / rect.height) * 2 - 1;
+  }
+
+  const onTouchStart = (e: TouchEvent) => {
+    if (e.touches.length === 1) {
+      attractorActive = true;
+      updateAttractorTouch(e);
+    }
+  };
+  const onTouchMove = (e: TouchEvent) => {
+    if (!attractorActive || e.touches.length !== 1) return;
+    e.preventDefault();
+    updateAttractorTouch(e);
+  };
+  const onTouchEnd = () => { attractorActive = false; };
+
   canvas.addEventListener("mousedown", onMouseDown);
   window.addEventListener("mousemove", onMouseMove);
   window.addEventListener("mouseup", onMouseUp);
+  canvas.addEventListener("touchstart", onTouchStart, { passive: true });
+  canvas.addEventListener("touchmove", onTouchMove, { passive: false });
+  canvas.addEventListener("touchend", onTouchEnd, { passive: true });
 
   return {
     render(_time: number, params: ParamValues) {
@@ -394,6 +418,9 @@ export function createMutualAttractionRenderer(
       canvas.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
+      canvas.removeEventListener("touchstart", onTouchStart);
+      canvas.removeEventListener("touchmove", onTouchMove);
+      canvas.removeEventListener("touchend", onTouchEnd);
       if (trailTex) gl.deleteTexture(trailTex);
       if (trailFB) gl.deleteFramebuffer(trailFB);
       gl.deleteBuffer(quadBuf);

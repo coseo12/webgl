@@ -254,9 +254,57 @@ export function createFallingSandRenderer(
     isMouseDown = false;
   };
 
+  // 터치 지원
+  function getGridPosFromTouch(e: TouchEvent): [number, number] {
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    const x = Math.floor(((touch.clientX - rect.left) / rect.width) * gridW);
+    const y = Math.floor(((touch.clientY - rect.top) / rect.height) * gridH);
+    return [
+      Math.max(0, Math.min(gridW - 1, x)),
+      Math.max(0, Math.min(gridH - 1, y)),
+    ];
+  }
+
+  function handleDropTouch(e: TouchEvent, time: number) {
+    if (!gridW) return;
+    const [gx, gy] = getGridPosFromTouch(e);
+    const brushSize = (currentParams.brushSize as number) || 3;
+    const rainbow = (currentParams.rainbow as boolean) || false;
+
+    let r: number, g: number, b: number;
+    if (rainbow) {
+      [r, g, b] = hslToRgb((time * 0.00005) % 1, 0.75, 0.55);
+    } else {
+      const hex = (currentParams.sandColor as string) || "#E8A530";
+      const [fr, fg, fb] = hexToRgb(hex);
+      r = Math.round(fr * 255);
+      g = Math.round(fg * 255);
+      b = Math.round(fb * 255);
+    }
+
+    dropSand(gx, gy, brushSize, r, g, b);
+  }
+
+  const onTouchStart = (e: TouchEvent) => {
+    if (e.touches.length === 1) {
+      isMouseDown = true;
+      handleDropTouch(e, lastTime);
+    }
+  };
+  const onTouchMove = (e: TouchEvent) => {
+    if (!isMouseDown || e.touches.length !== 1) return;
+    e.preventDefault();
+    handleDropTouch(e, lastTime);
+  };
+  const onTouchEnd = () => { isMouseDown = false; };
+
   canvas.addEventListener("mousedown", onMouseDown);
   window.addEventListener("mousemove", onMouseMove);
   window.addEventListener("mouseup", onMouseUp);
+  canvas.addEventListener("touchstart", onTouchStart, { passive: true });
+  canvas.addEventListener("touchmove", onTouchMove, { passive: false });
+  canvas.addEventListener("touchend", onTouchEnd, { passive: true });
 
   return {
     render(time: number, params: ParamValues) {
@@ -305,6 +353,9 @@ export function createFallingSandRenderer(
       canvas.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
+      canvas.removeEventListener("touchstart", onTouchStart);
+      canvas.removeEventListener("touchmove", onTouchMove);
+      canvas.removeEventListener("touchend", onTouchEnd);
       if (texture) gl.deleteTexture(texture);
       gl.deleteBuffer(quadBuf);
       gl.deleteProgram(program);

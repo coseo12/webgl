@@ -292,9 +292,41 @@ export function createGameOfLifeRenderer(
   };
   const onMouseUp = () => { isMouseDown = false; };
 
+  // 터치 지원
+  function toggleCellTouch(e: TouchEvent) {
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    const gx = Math.floor(((touch.clientX - rect.left) / rect.width) * GRID_SIZE);
+    const gy = GRID_SIZE - 1 - Math.floor(((touch.clientY - rect.top) / rect.height) * GRID_SIZE);
+    if (gx < 0 || gx >= GRID_SIZE || gy < 0 || gy >= GRID_SIZE) return;
+
+    const pixel = new Uint8Array([255, 255, 255, 255]);
+    gl.bindTexture(gl.TEXTURE_2D, textures[currentFB]);
+    gl.texSubImage2D(
+      gl.TEXTURE_2D, 0, gx, gy, 1, 1,
+      gl.RGBA, gl.UNSIGNED_BYTE, pixel
+    );
+  }
+
+  const onTouchStart = (e: TouchEvent) => {
+    if (e.touches.length === 1) {
+      isMouseDown = true;
+      toggleCellTouch(e);
+    }
+  };
+  const onTouchMove = (e: TouchEvent) => {
+    if (!isMouseDown || e.touches.length !== 1) return;
+    e.preventDefault();
+    toggleCellTouch(e);
+  };
+  const onTouchEnd = () => { isMouseDown = false; };
+
   canvas.addEventListener("mousedown", onMouseDown);
   window.addEventListener("mousemove", onMouseMove);
   window.addEventListener("mouseup", onMouseUp);
+  canvas.addEventListener("touchstart", onTouchStart, { passive: true });
+  canvas.addEventListener("touchmove", onTouchMove, { passive: false });
+  canvas.addEventListener("touchend", onTouchEnd, { passive: true });
 
   // --- 상태 관리 ---
 
@@ -346,6 +378,9 @@ export function createGameOfLifeRenderer(
       canvas.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
+      canvas.removeEventListener("touchstart", onTouchStart);
+      canvas.removeEventListener("touchmove", onTouchMove);
+      canvas.removeEventListener("touchend", onTouchEnd);
       for (const t of textures) gl.deleteTexture(t);
       for (const f of framebuffers) gl.deleteFramebuffer(f);
       gl.deleteBuffer(quadBuf);

@@ -368,9 +368,64 @@ export function createMarblingRenderer(
     swirlCenter = null;
   };
 
+  // 터치 지원
+  function getUVFromTouch(e: TouchEvent): [number, number] {
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    const x = (touch.clientX - rect.left) / rect.width;
+    const y = 1 - (touch.clientY - rect.top) / rect.height;
+    return [x, y];
+  }
+
+  const onTouchStart = (e: TouchEvent) => {
+    if (e.touches.length === 1) {
+      isMouseDown = true;
+      const uv = getUVFromTouch(e);
+      lastMouseUV = uv;
+
+      const tool = (currentParams.tool as string) || "drop";
+      if (tool === "drop") {
+        const color = hexToRgb((currentParams.inkColor as string) || "#E63946");
+        const radius = (currentParams.radius as number) || 0.08;
+        pendingOps.push({ type: "drop", center: uv, radius, color });
+      } else if (tool === "swirl") {
+        swirlCenter = uv;
+      }
+    }
+  };
+
+  const onTouchMove = (e: TouchEvent) => {
+    if (!isMouseDown || !lastMouseUV || e.touches.length !== 1) return;
+    e.preventDefault();
+    const uv = getUVFromTouch(e);
+    const tool = (currentParams.tool as string) || "drop";
+
+    if (tool === "tine") {
+      const strength = (currentParams.strength as number) || 3;
+      const width = (currentParams.radius as number) || 0.08;
+      pendingOps.push({
+        type: "tine",
+        start: lastMouseUV,
+        end: uv,
+        strength,
+        width,
+      });
+      lastMouseUV = uv;
+    }
+  };
+
+  const onTouchEnd = () => {
+    isMouseDown = false;
+    lastMouseUV = null;
+    swirlCenter = null;
+  };
+
   canvas.addEventListener("mousedown", onMouseDown);
   window.addEventListener("mousemove", onMouseMove);
   window.addEventListener("mouseup", onMouseUp);
+  canvas.addEventListener("touchstart", onTouchStart, { passive: true });
+  canvas.addEventListener("touchmove", onTouchMove, { passive: false });
+  canvas.addEventListener("touchend", onTouchEnd, { passive: true });
 
   return {
     render(_time: number, params: ParamValues) {
@@ -417,6 +472,9 @@ export function createMarblingRenderer(
       canvas.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
+      canvas.removeEventListener("touchstart", onTouchStart);
+      canvas.removeEventListener("touchmove", onTouchMove);
+      canvas.removeEventListener("touchend", onTouchEnd);
       for (const t of textures) gl.deleteTexture(t);
       for (const f of framebuffers) gl.deleteFramebuffer(f);
       gl.deleteBuffer(quadBuf);

@@ -250,10 +250,34 @@ export function createSolarSystemRenderer(
     distance = Math.max(5, Math.min(50, distance));
   };
 
+  // 터치 지원
+  const onTouchStart = (e: TouchEvent) => {
+    if (e.touches.length === 1) {
+      isDragging = true;
+      lastMouseX = e.touches[0].clientX;
+      lastMouseY = e.touches[0].clientY;
+    }
+  };
+  const onTouchMove = (e: TouchEvent) => {
+    if (!isDragging || e.touches.length !== 1) return;
+    e.preventDefault();
+    const dx = e.touches[0].clientX - lastMouseX;
+    const dy = e.touches[0].clientY - lastMouseY;
+    azimuth -= dx * 0.005;
+    elevation += dy * 0.005;
+    elevation = Math.max(-Math.PI / 2 + 0.05, Math.min(Math.PI / 2 - 0.05, elevation));
+    lastMouseX = e.touches[0].clientX;
+    lastMouseY = e.touches[0].clientY;
+  };
+  const onTouchEnd = () => { isDragging = false; };
+
   canvas.addEventListener("mousedown", onMouseDown);
   window.addEventListener("mousemove", onMouseMove);
   window.addEventListener("mouseup", onMouseUp);
   canvas.addEventListener("wheel", onWheel, { passive: false });
+  canvas.addEventListener("touchstart", onTouchStart, { passive: true });
+  canvas.addEventListener("touchmove", onTouchMove, { passive: false });
+  canvas.addEventListener("touchend", onTouchEnd, { passive: true });
 
   // 천체 하나를 렌더링하는 헬퍼
   function drawBody(
@@ -359,6 +383,9 @@ export function createSolarSystemRenderer(
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
       canvas.removeEventListener("wheel", onWheel);
+      canvas.removeEventListener("touchstart", onTouchStart);
+      canvas.removeEventListener("touchmove", onTouchMove);
+      canvas.removeEventListener("touchend", onTouchEnd);
       gl.deleteBuffer(sphereVbo);
       gl.deleteBuffer(sphereIbo);
       for (const buf of orbitBuffers) {
